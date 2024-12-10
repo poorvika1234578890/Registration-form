@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webinar Registration</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Basic styles for the form */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            max-width: 90%;
+        }
+
+        .form-container h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #333;
+            display: block;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input[type="email"]:focus, input[type="text"]:focus, select:focus {
+            border-color: #4CAF50;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .footer a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 12px;
+            display: block;
+        }
+
+        .success-message {
+            color: green;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h1>Webinar Registration</h1>
+
+    <!-- Success message -->
+    <?php if (isset($_SESSION['formData'])): ?>
+        <div class="success-message">
+            <h3>Registration Successful!</h3>
+            <p>Here are the details you submitted:</p>
+            <ul>
+                <li><strong>Name:</strong> <?php echo $_SESSION['formData']['name']; ?></li>
+                <li><strong>Email:</strong> <?php echo $_SESSION['formData']['email']; ?></li>
+                <li><strong>Job Title:</strong> <?php echo $_SESSION['formData']['jobTitle']; ?></li>
+                <li><strong>Company:</strong> <?php echo $_SESSION['formData']['company']; ?></li>
+                <li><strong>Preferred Time:</strong> <?php echo $_SESSION['formData']['webinarTime']; ?></li>
+                <li><strong>Referral:</strong> <?php echo $_SESSION['formData']['referral']; ?></li>
+                <li><strong>Consent:</strong> <?php echo $_SESSION['formData']['recordingConsent'] ? 'Yes' : 'No'; ?></li>
+            </ul>
+            <p>Thank you for registering. You will receive an email confirmation shortly.</p>
+        </div>
+        <?php session_unset(); ?>
+    <?php else: ?>
+        <!-- Registration Form -->
+        <form method="POST" action="">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" value="<?php echo isset($name) ? $name : ''; ?>" required>
+                <?php if (isset($errors['name'])): ?>
+                    <div class="error-message"><?php echo $errors['name']; ?></div>
+                <?php endif; ?>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" value="<?php echo isset($email) ? $email : ''; ?>" required>
+                <?php if (isset($errors['email'])): ?>
+                    <div class="error-message"><?php echo $errors['email']; ?></div>
+                <?php endif; ?>
+            </div>
+
+            <div class="form-group">
+                <label for="jobTitle">Job Title</label>
+                <input type="text" id="jobTitle" name="jobTitle" placeholder="Enter your job title" value="<?php echo isset($jobTitle) ? $jobTitle : ''; ?>" required>
+                <?php if (isset($errors['jobTitle'])): ?>
+                    <div class="error-message"><?php echo $errors['jobTitle']; ?></div>
+                <?php endif; ?>
+            </div>
+
+            <div class="form-group">
+                <label for="company">Company Name</label>
+                <input type="text" id="company" name="company" placeholder="Enter your company name" value="<?php echo isset($company) ? $company : ''; ?>" required>
+                <?php if (isset($errors['company'])): ?>
+                    <div class="error-message"><?php echo $errors['company']; ?></div>
+                <?php endif; ?>
+            </div>
+
+            <div class="form-group">
+                <label for="webinarTime">Preferred Webinar Time</label>
+                <select id="webinarTime" name="webinarTime" required>
+                    <option value="10:00 AM EST" <?php echo (isset($webinarTime) && $webinarTime == '10:00 AM EST') ? 'selected' : ''; ?>>10:00 AM EST</option>
+                    <option value="2:00 PM EST" <?php echo (isset($webinarTime) && $webinarTime == '2:00 PM EST') ? 'selected' : ''; ?>>2:00 PM EST</option>
+                    <option value="5:00 PM EST" <?php echo (isset($webinarTime) && $webinarTime == '5:00 PM EST') ? 'selected' : ''; ?>>5:00 PM EST
